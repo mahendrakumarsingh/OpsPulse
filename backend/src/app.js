@@ -43,6 +43,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Mount Routes
+app.use('/api/auth', require('./routes/auth'));
+
 // Basic Health Check Endpoint
 app.get('/health', (req, res) => {
   const dbStatus = ['Disconnected', 'Connected', 'Connecting', 'Disconnecting'];
