@@ -10,6 +10,9 @@ pipeline {
         // Credential Bindings in Jenkins Dashboard
         DOCKER_HUB_CREDS_ID    = 'docker-hub-credentials'
         KUBECONFIG_CREDS_ID    = 'kubeconfig-credentials'
+        
+        // Add Git to PATH for Windows agent to find sh.exe
+        PATH                   = "C:\\Program Files\\Git\\bin;C:\\Program Files\\Git\\usr\\bin;${env.PATH}"
     }
 
     stages {
