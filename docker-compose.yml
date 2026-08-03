@@ -33,9 +33,21 @@ services:
       dockerfile: Dockerfile
     container_name: opspulse_frontend
     restart: always
+    expose:
+      - "80"
+    depends_on:
+      - backend
+
+  reverse-proxy:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: opspulse_gateway
+    restart: always
     ports:
       - "80:80"
     depends_on:
+      - frontend
       - backend
 
 volumes:

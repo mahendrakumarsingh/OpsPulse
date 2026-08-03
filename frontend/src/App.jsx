@@ -14,8 +14,9 @@ import {
   Activity,
   Terminal
 } from 'lucide-react';
-
-const SOCKET_URL = 'http://localhost:5000';
+const SOCKET_URL = typeof window !== 'undefined' && window.location.hostname === 'localhost' && window.location.port === '5173'
+  ? 'http://localhost:5000'
+  : window.location.origin;
 
 export default function App() {
   // Authentication State
