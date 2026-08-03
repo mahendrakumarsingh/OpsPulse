@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: mahendrakumarsingh/opspulse-backend:latest
+          image: mahendrasingh12345/opspulse-backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000

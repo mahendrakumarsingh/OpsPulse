@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Global variables for image naming and registry connection
-        REGISTRY_USER          = 'mahendrakumarsingh'
+        REGISTRY_USER          = 'mahendrasingh12345'
         BACKEND_IMAGE_NAME     = 'opspulse-backend'
         FRONTEND_IMAGE_NAME    = 'opspulse-frontend'
         
