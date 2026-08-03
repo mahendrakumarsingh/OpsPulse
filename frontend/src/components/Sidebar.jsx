@@ -4,13 +4,12 @@ import {
   LayoutDashboard, 
   Server, 
   AlertTriangle, 
-  Users, 
-  Settings, 
   Shield,
-  UserCheck
+  UserCheck,
+  LogOut
 } from 'lucide-react';
 
-export default function Sidebar({ currentRole, setCurrentRole, activeTab, setActiveTab }) {
+export default function Sidebar({ currentRole, setCurrentRole, activeTab, setActiveTab, userName, onLogout }) {
   const navItems = [
     { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
     { id: 'services', name: 'Services', icon: Server },
@@ -74,7 +73,7 @@ export default function Sidebar({ currentRole, setCurrentRole, activeTab, setAct
                 onClick={() => setCurrentRole(role)}
                 className={`py-1 text-[10px] font-bold rounded-md transition-all ${
                   currentRole === role
-                    ? 'bg-indigo-650 bg-indigo-600 text-white shadow-sm'
+                    ? 'bg-indigo-600 text-white shadow-sm'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -84,17 +83,26 @@ export default function Sidebar({ currentRole, setCurrentRole, activeTab, setAct
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-2 rounded-xl bg-white border border-slate-200 shadow-sm">
-          <div className="h-9 w-9 rounded-full bg-slate-100 flex items-center justify-center border border-slate-250 border-slate-200">
-            <UserCheck className="h-4 w-4 text-indigo-600" />
+        <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 truncate">
+            <div className="h-9 w-9 rounded-full bg-indigo-50 flex items-center justify-center border border-indigo-100 shrink-0">
+              <UserCheck className="h-4.5 w-4.5 text-indigo-600" />
+            </div>
+            <div className="truncate">
+              <p className="text-xs font-bold text-slate-800 truncate">{userName || 'Dev Mentor'}</p>
+              <p className="text-[10px] text-slate-500 truncate flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                {currentRole} Mode
+              </p>
+            </div>
           </div>
-          <div className="truncate">
-            <p className="text-xs font-bold text-slate-850 text-slate-800 truncate">Dev Mentor</p>
-            <p className="text-[10px] text-slate-500 truncate flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              {currentRole} Mode
-            </p>
-          </div>
+          <button 
+            onClick={onLogout}
+            title="Sign Out"
+            className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-slate-50 transition-colors shrink-0"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </aside>

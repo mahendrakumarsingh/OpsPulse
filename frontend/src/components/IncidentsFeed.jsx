@@ -25,8 +25,12 @@ export default function IncidentsFeed({ incidents, services, currentRole, onAckn
     }
   };
 
-  const getServiceMap = (serviceId) => {
-    const service = services.find(s => s._id === serviceId);
+  const getServiceMap = (serviceField) => {
+    if (!serviceField) return 'Unknown Service';
+    if (typeof serviceField === 'object' && serviceField.name) {
+      return serviceField.name;
+    }
+    const service = services.find(s => s._id === serviceField || s._id === serviceField.toString());
     return service ? service.name : 'Unknown Service';
   };
 
