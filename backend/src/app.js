@@ -45,6 +45,8 @@ app.use((req, res, next) => {
 
 // Mount Routes
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/services', require('./routes/services'));
+app.use('/api/incidents', require('./routes/incidents'));
 
 // Basic Health Check Endpoint
 app.get('/health', (req, res) => {
@@ -71,6 +73,15 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(`[WebSocket] Client session disconnected: ${socket.id}`);
   });
+});
+
+// Uptime Monitor Cron Scheduler (Runs every 30 seconds)
+const cron = require('node-cron');
+const { runMonitor } = require('./services/monitor');
+
+cron.schedule('*/30 * * * * *', () => {
+  console.log('[Scheduler] Executing synthetic monitoring loop...');
+  runMonitor(io);
 });
 
 // Start Server Listen
