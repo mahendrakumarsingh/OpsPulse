@@ -8,7 +8,6 @@ import {
   Plus, 
   RefreshCw, 
   AlertOctagon, 
-  HelpCircle,
   Activity,
   Terminal
 } from 'lucide-react';
@@ -35,7 +34,6 @@ export default function App() {
   // Background Simulation: Randomize service latency and simulate outages
   useEffect(() => {
     const interval = setInterval(() => {
-      // 1. Randomize latencies for operational services
       setServices(prev => prev.map(s => {
         if (s.status === 'Operational') {
           const delta = Math.floor(Math.random() * 20) - 10;
@@ -49,7 +47,7 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Simulate an automated incident after 25 seconds of run-time to demonstrate WebSockets mock
+  // Simulate an automated incident after 25 seconds of run-time
   useEffect(() => {
     const alertTimeout = setTimeout(() => {
       triggerAutomaticIncident();
@@ -58,7 +56,6 @@ export default function App() {
   }, []);
 
   const triggerAutomaticIncident = () => {
-    // Pick the billing service
     const targetServiceId = 's2';
     setServices(prev => prev.map(s => {
       if (s._id === targetServiceId) {
@@ -80,7 +77,6 @@ export default function App() {
     setIncidents(prev => [newIncident, ...prev]);
     setRecentAlert(newIncident);
 
-    // Auto-clear notification after 6 seconds
     setTimeout(() => {
       setRecentAlert(null);
     }, 6000);
@@ -125,7 +121,6 @@ export default function App() {
       return s;
     }));
 
-    // Find and resolve the incident
     setIncidents(prev => prev.map(inc => {
       if (inc.service === serviceId && inc.status !== 'Resolved') {
         return {
@@ -141,7 +136,6 @@ export default function App() {
   // Delete Service
   const handleDeleteService = (serviceId) => {
     setServices(prev => prev.filter(s => s._id !== serviceId));
-    // Clear outstanding incidents related to it
     setIncidents(prev => prev.filter(inc => inc.service !== serviceId));
   };
 
@@ -180,12 +174,11 @@ export default function App() {
       return inc;
     }));
 
-    // Re-heal the service
     handleTriggerRecovery(incident.service);
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex">
       {/* Sidebar Navigation */}
       <Sidebar 
         currentRole={currentRole} 
@@ -198,39 +191,39 @@ export default function App() {
       <main className="flex-1 ml-64 p-8 min-h-screen">
         {/* Dynamic Notification Toast */}
         {recentAlert && (
-          <div className="fixed bottom-6 right-6 z-50 max-w-sm glass-panel p-4 rounded-xl border-rose-500/40 bg-rose-950/20 text-rose-200 shadow-2xl flex items-start gap-3 animate-bounce">
-            <AlertOctagon className="h-5 w-5 text-rose-400 shrink-0 mt-0.5 animate-pulse" />
+          <div className="fixed bottom-6 right-6 z-50 max-w-sm glass-panel p-4 rounded-xl border-rose-300 bg-rose-50 text-rose-900 shadow-2xl flex items-start gap-3 animate-bounce">
+            <AlertOctagon className="h-5 w-5 text-rose-600 shrink-0 mt-0.5 animate-pulse" />
             <div>
-              <h5 className="font-bold text-xs text-rose-100 uppercase tracking-wider">Alert Broadcasted</h5>
-              <p className="text-xs mt-1 font-semibold">{recentAlert.title}</p>
-              <p className="text-[10px] text-rose-300/80 mt-0.5">Real-time update via mock-Websocket feed.</p>
+              <h5 className="font-bold text-xs text-rose-950 uppercase tracking-wider">Alert Broadcasted</h5>
+              <p className="text-xs mt-1 font-bold">{recentAlert.title}</p>
+              <p className="text-[10px] text-rose-700/80 mt-0.5 font-semibold">Real-time update via mock-Websocket feed.</p>
             </div>
           </div>
         )}
 
         {/* Global Page Header */}
-        <header className="flex items-center justify-between pb-6 border-b border-slate-900 mb-8">
+        <header className="flex items-center justify-between pb-6 border-b border-slate-200 mb-8">
           <div>
-            <h1 className="text-2xl font-black text-slate-100 tracking-tight capitalize">
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight capitalize">
               {activeTab} Overview
             </h1>
-            <p className="text-xs text-slate-400 mt-1">
-              Active Role: <strong className="text-indigo-400 font-semibold">{currentRole}</strong> • Mode: <span className="text-emerald-400 font-semibold">Live Sandbox</span>
+            <p className="text-xs text-slate-500 mt-1 font-medium">
+              Active Role: <strong className="text-indigo-600 font-bold">{currentRole}</strong> • Mode: <span className="text-emerald-600 font-bold">Live Sandbox</span>
             </p>
           </div>
 
           <div className="flex gap-2">
             <button 
               onClick={triggerAutomaticIncident}
-              className="px-3 py-1.5 bg-slate-900 border border-slate-800 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 flex items-center gap-1.5 hover:bg-slate-850 transition-all"
+              className="px-3 py-1.5 bg-white border border-slate-200 text-xs font-bold rounded-xl text-slate-650 hover:text-slate-800 flex items-center gap-1.5 hover:bg-slate-50 transition-all shadow-sm"
             >
-              <RefreshCw className="h-3.5 w-3.5" /> Force Synthetic Outage
+              <RefreshCw className="h-3.5 w-3.5 text-slate-500" /> Force Synthetic Outage
             </button>
 
             {(currentRole === 'Admin' || currentRole === 'Responder') && (
               <button 
                 onClick={() => setIsModalOpen(true)}
-                className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-lg shadow-indigo-600/10 transition-all"
+                className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-md shadow-indigo-600/10 transition-all"
               >
                 <Plus className="h-4 w-4" /> Add Service
               </button>
@@ -246,17 +239,17 @@ export default function App() {
 
             {/* Middle Section: Metrics SVG Graph & Live Stream */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-              {/* Latency History (Recharts/Chart.js replacement) */}
-              <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-800/80">
+              {/* Latency History */}
+              <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-200/80 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
                   <div>
-                    <h3 className="text-sm font-extrabold text-slate-200 flex items-center gap-2">
-                      <Activity className="h-4.5 w-4.5 text-indigo-400" />
+                    <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+                      <Activity className="h-4.5 w-4.5 text-indigo-650 text-indigo-650" />
                       Synthetic Latency Analytics (p95 latency trend)
                     </h3>
-                    <p className="text-[10px] text-slate-400 mt-0.5">Custom SVG real-time visual area telemetry plotter.</p>
+                    <p className="text-[10px] text-slate-500 mt-0.5 font-medium">Custom SVG real-time visual area telemetry plotter.</p>
                   </div>
-                  <span className="text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100 px-2 py-0.5 rounded-full">
                     SLA Limit: 200ms
                   </span>
                 </div>
@@ -266,14 +259,14 @@ export default function App() {
                   <svg className="w-full h-full" viewBox="0 0 500 100" preserveAspectRatio="none">
                     <defs>
                       <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#6366f1" stopOpacity="0.4" />
+                        <stop offset="0%" stopColor="#6366f1" stopOpacity="0.25" />
                         <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
                       </linearGradient>
                     </defs>
                     {/* Grid Lines */}
-                    <line x1="0" y1="20" x2="500" y2="20" stroke="#1e293b" strokeWidth="0.5" strokeDasharray="3" />
-                    <line x1="0" y1="50" x2="500" y2="50" stroke="#1e293b" strokeWidth="0.5" strokeDasharray="3" />
-                    <line x1="0" y1="80" x2="500" y2="80" stroke="#1e293b" strokeWidth="0.5" strokeDasharray="3" />
+                    <line x1="0" y1="20" x2="500" y2="20" stroke="#e2e8f0" strokeWidth="0.75" strokeDasharray="3" />
+                    <line x1="0" y1="50" x2="500" y2="50" stroke="#e2e8f0" strokeWidth="0.75" strokeDasharray="3" />
+                    <line x1="0" y1="80" x2="500" y2="80" stroke="#e2e8f0" strokeWidth="0.75" strokeDasharray="3" />
                     
                     {/* Area Graph */}
                     <path
@@ -289,26 +282,26 @@ export default function App() {
                     />
                     
                     {/* Highlighting anomaly alert */}
-                    <circle cx="400" cy="30" r="4.5" fill="#f43f5e" stroke="#18181b" strokeWidth="1.5" className="animate-ping" />
+                    <circle cx="400" cy="30" r="4.5" fill="#f43f5e" stroke="#ffffff" strokeWidth="1.5" className="animate-ping" />
                   </svg>
                   
                   {/* Axis indicators */}
-                  <div className="absolute top-1 right-2 text-[9px] font-bold text-slate-500">200ms</div>
-                  <div className="absolute top-[44%] right-2 text-[9px] font-bold text-slate-500">100ms</div>
-                  <div className="absolute bottom-1 right-2 text-[9px] font-bold text-slate-500">0ms</div>
+                  <div className="absolute top-1 right-2 text-[9px] font-bold text-slate-400">200ms</div>
+                  <div className="absolute top-[44%] right-2 text-[9px] font-bold text-slate-400">100ms</div>
+                  <div className="absolute bottom-1 right-2 text-[9px] font-bold text-slate-400">0ms</div>
                 </div>
               </div>
 
-              {/* Shell Logger Terminal / Event logs */}
-              <div className="glass-panel p-6 rounded-2xl border border-slate-800/80 flex flex-col justify-between">
+              {/* Shell Logger Terminal */}
+              <div className="glass-panel p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
                 <div>
-                  <h3 className="text-sm font-extrabold text-slate-200 flex items-center gap-2">
-                    <Terminal className="h-4.5 w-4.5 text-indigo-400" />
+                  <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+                    <Terminal className="h-4.5 w-4.5 text-indigo-650 text-indigo-650" />
                     DevOps Shell Monitor
                   </h3>
-                  <p className="text-[10px] text-slate-400 mt-0.5">Shell diagnostic output for active background tasks.</p>
+                  <p className="text-[10px] text-slate-500 mt-0.5 font-medium">Shell diagnostic output for active background tasks.</p>
                 </div>
-                <div className="mt-4 flex-1 bg-slate-950 border border-slate-900 rounded-xl p-3 font-mono text-[9px] text-indigo-300 space-y-1.5 overflow-y-auto max-h-[140px]">
+                <div className="mt-4 flex-1 bg-slate-950 border border-slate-900 rounded-xl p-3 font-mono text-[9px] text-indigo-300 space-y-1.5 overflow-y-auto max-h-[140px] shadow-inner">
                   <div>[08:34:01] INF: Starting monitor check...</div>
                   <div>[08:34:01] DBG: Connection to MongoDB ok (ping 8ms)</div>
                   <div>[08:34:02] INF: Service Billing API latency 125ms</div>
