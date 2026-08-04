@@ -97,3 +97,7 @@ pipeline {
         }
     }
 }
+
+def sh(String command) {
+    bat "\"C:\\Program Files\\Git\\bin\\sh.exe\" -c \"${command.replace('"', '\\"')}\""
+}
