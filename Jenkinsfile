@@ -82,8 +82,8 @@ pipeline {
                     sh 'kubectl rollout restart deployment/frontend-deployment -n opspulse --kubeconfig=$KUBECONFIG'
                     
                     // Await rollout confirmation
-                    sh 'kubectl rollout status deployment/backend-deployment -n opspulse --timeout=120s --kubeconfig=$KUBECONFIG'
-                    sh 'kubectl rollout status deployment/frontend-deployment -n opspulse --timeout=120s --kubeconfig=$KUBECONFIG'
+                    sh 'kubectl rollout status deployment/backend-deployment -n opspulse --timeout=300s --kubeconfig=$KUBECONFIG'
+                    sh 'kubectl rollout status deployment/frontend-deployment -n opspulse --timeout=300s --kubeconfig=$KUBECONFIG'
                 }
             }
         }
