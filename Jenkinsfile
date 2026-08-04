@@ -11,8 +11,8 @@ pipeline {
         DOCKER_HUB_CREDS_ID    = 'docker-hub-credentials'
         KUBECONFIG_CREDS_ID    = 'kubeconfig-credentials'
         
-        // Add Git to PATH for Windows agent to find sh.exe
-        PATH                   = "C:\\Program Files\\Git\\bin;C:\\Program Files\\Git\\usr\\bin;${env.PATH}"
+        // Add Git, Docker Desktop and Kubectl to PATH for Windows agent
+        PATH                   = "C:\\Program Files\\Git\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Users\\MAHEN\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;${env.PATH}"
     }
 
     stages {
