@@ -74,6 +74,7 @@ pipeline {
                 echo 'Applying configurations and performing rolling update rollout...'
                 withCredentials([file(credentialsId: KUBECONFIG_CREDS_ID, variable: 'KUBECONFIG')]) {
                     // Apply Kubernetes manifests
+                    sh 'kubectl apply -f k8s/namespace.yaml --kubeconfig=$KUBECONFIG'
                     sh 'kubectl apply -f k8s/ --kubeconfig=$KUBECONFIG'
                     
                     // Restart deployments to pull the fresh container builds
